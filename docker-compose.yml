@@ -37,7 +37,7 @@ services:
       - "9000"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.backend.rule=Host(`api.localhost`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.backend.rule=Host(`localhost`) && PathPrefix(`/api`)"
       - "traefik.http.routers.backend.entrypoints=web"
       - "traefik.http.services.backend.loadbalancer.server.port=9000"
       - "traefik.http.services.backend.loadbalancer.healthcheck.path=/health"
@@ -55,7 +55,7 @@ services:
       - "9000"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.backend1.rule=Host(`api.localhost`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.backend1.rule=Host(`localhost`) && PathPrefix(`/api`)"
       - "traefik.http.routers.backend1.entrypoints=web"
       - "traefik.http.services.backend1.loadbalancer.server.port=9000"
     networks:
@@ -71,7 +71,7 @@ services:
       - "9000"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.backend2.rule=Host(`api.localhost`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.backend2.rule=Host(`localhost`) && PathPrefix(`/api`)"
       - "traefik.http.routers.backend2.entrypoints=web"
       - "traefik.http.services.backend2.loadbalancer.server.port=9000"
     networks:
