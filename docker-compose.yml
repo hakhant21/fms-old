@@ -25,6 +25,8 @@ services:
     build: ./backend
     networks:
       - app-network
+    ports:
+      - "9000:9000"
     environment:
       - SERVICE_ID=backend-1
     restart: unless-stopped
@@ -33,6 +35,8 @@ services:
     build: ./backend
     networks:
       - app-network
+    ports:
+      - "9001:9000"
     environment:
       - SERVICE_ID=backend-2
     restart: unless-stopped
@@ -41,6 +45,8 @@ services:
     build: ./backend
     networks:
       - app-network
+    ports:
+      - "9002:9000"
     environment:
       - SERVICE_ID=backend-3
     restart: unless-stopped
