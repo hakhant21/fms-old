@@ -1,6 +1,0 @@
-[submodule "backend"]
-	path = backend
-	url = https://github.com/digitalengineeringtech/cloud_v2_socket_v2.1.git
-[submodule "frontend"]
-	path = frontend
-	url = https://github.com/digitalengineeringtech/MULTI_DB_FRONTEND_OG.git
