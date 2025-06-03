@@ -1,0 +1,54 @@
+services:
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - frontend
+      - backend1
+      - backend2
+      - backend3
+    networks:
+      - app-network
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  backend1:
+    build: ./backend
+    ports:
+      - "9001:9000"
+    networks:
+      - app-network
+    environment:
+      - SERVICE_ID=backend-1
+    restart: unless-stopped
+
+  backend2:
+    build: ./backend
+    ports:
+      - "9002:9000"
+    networks:
+      - app-network
+    environment:
+      - SERVICE_ID=backend-2
+    restart: unless-stopped
+
+  backend3:
+    build: ./backend
+    ports:
+      - "9003:9000"
+    networks:
+      - app-network
+    environment:
+      - SERVICE_ID=backend-3
+    restart: unless-stopped
+
+networks:
+  app-network:
+    driver: bridge
