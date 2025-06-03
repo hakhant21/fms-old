@@ -21,8 +21,6 @@ services:
       - "3000:3000"
     networks:
       - app-network
-    environment:
-      - REACT_APP_API_BASE_URL=/api
 
   backend1:
     build: ./backend
