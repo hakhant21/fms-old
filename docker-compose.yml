@@ -1,56 +1,74 @@
 services:
-  nginx:
-    build: ./nginx
+  traefik:
+    image: traefik:v2.10
+    container_name: traefik
+    command:
+      - "--api.insecure=true"           # Enable dashboard (DEV ONLY)
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
     ports:
-      - "80:80"
+      - "80:80"                        # HTTP
+      - "8080:8080"                    # Dashboard (DEV)
     volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-    depends_on:
-      - frontend
-      - backend1
-      - backend2
-      - backend3
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
-      - app-network
+      - traefik-net
 
   frontend:
     build: ./frontend
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`localhost`)"
+      - "traefik.http.routers.frontend.entrypoints=web"
+      - "traefik.http.services.frontend.loadbalancer.server.port=3000"
     networks:
-      - app-network
-    restart: unless-stopped
+      - traefik-net
+      - app-net
+
+    backend:
+      build: ./backend
+      environment:
+        - PORT=9000
+        - SERVICE_ID=backend
+      expose:
+        - "9000"
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.backend.rule=Host(`localhost`) || PathPrefix(`/api`)"
+        - "traefik.http.services.backend.loadbalancer.server.port=9000"
+        - "traefik.http.services.backend.loadbalancer.healthcheck.path=/health"
+        - "traefik.http.services.backend.loadbalancer.healthcheck.interval=10s"
+      networks:
+        - traefik-net
+        - app-net
 
   backend1:
     build: ./backend
-    networks:
-      - app-network
-    ports:
-      - "9000:9000"
     environment:
-      - SERVICE_ID=backend-1
-    restart: unless-stopped
+      - PORT=9000
+      - SERVICE_ID=backend2
+    expose:
+      - "9000"
+    networks:
+      - traefik-net
+      - app-net
 
   backend2:
     build: ./backend
-    networks:
-      - app-network
-    ports:
-      - "9001:9000"
     environment:
-      - SERVICE_ID=backend-2
-    restart: unless-stopped
-
-  backend3:
-    build: ./backend
+      - PORT=9000
+      - SERVICE_ID=backend2
+    expose:
+      - "9000"
     networks:
-      - app-network
-    ports:
-      - "9002:9000"
-    environment:
-      - SERVICE_ID=backend-3
-    restart: unless-stopped
+      - traefik-net
+      - app-net
 
 networks:
-  app-network:
+  traefik-net:
+    driver: bridge
+  app-net:
     driver: bridge
