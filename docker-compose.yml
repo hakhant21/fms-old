@@ -3,13 +3,13 @@ services:
     image: traefik:v2.10
     container_name: traefik
     command:
-      - "--api.insecure=true"           # Enable dashboard (DEV ONLY)
+      - "--api.insecure=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
     ports:
-      - "80:80"                        # HTTP
-      - "8080:8080"                    # Dashboard (DEV)
+      - "80:80"
+      - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
@@ -29,29 +29,35 @@ services:
       - app-net
 
   backend:
-      build: ./backend
-      environment:
-        - PORT=9000
-        - SERVICE_ID=backend
-      expose:
-        - "9000"
-      labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.backend.rule=Host(`localhost`) || PathPrefix(`/api`)"
-        - "traefik.http.services.backend.loadbalancer.server.port=9000"
-        - "traefik.http.services.backend.loadbalancer.healthcheck.path=/health"
-        - "traefik.http.services.backend.loadbalancer.healthcheck.interval=10s"
-      networks:
-        - traefik-net
-        - app-net
+    build: ./backend
+    environment:
+      - PORT=9000
+      - SERVICE_ID=backend
+    expose:
+      - "9000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=Host(`localhost`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.backend.entrypoints=web"
+      - "traefik.http.services.backend.loadbalancer.server.port=9000"
+      - "traefik.http.services.backend.loadbalancer.healthcheck.path=/health"
+      - "traefik.http.services.backend.loadbalancer.healthcheck.interval=10s"
+    networks:
+      - traefik-net
+      - app-net
 
   backend1:
     build: ./backend
     environment:
       - PORT=9000
-      - SERVICE_ID=backend2
+      - SERVICE_ID=backend1
     expose:
       - "9000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=Host(`localhost`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.backend.entrypoints=web"
+      - "traefik.http.services.backend.loadbalancer.server.port=9000"
     networks:
       - traefik-net
       - app-net
@@ -63,6 +69,11 @@ services:
       - SERVICE_ID=backend2
     expose:
       - "9000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=Host(`localhost`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.backend.entrypoints=web"
+      - "traefik.http.services.backend.loadbalancer.server.port=9000"
     networks:
       - traefik-net
       - app-net
