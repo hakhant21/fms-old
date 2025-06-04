@@ -1,0 +1,20 @@
+http:
+  routers:
+    backend-router:
+      rule: "Host(`detfsmm.com`) && PathPrefix(`/api`)"
+      entryPoints:
+        - "web"
+      service: "backend-service"
+  
+  services:
+    backend-service:
+      loadBalancer:
+        servers:
+          - url: "http://backend:9000"
+          - url: "http://backend1:9000"
+          - url: "http://backend2:9000"
+        strategy: "LeastConn"
+  
+  serversTransports:
+    insecure-skip-verify:
+      insecureSkipVerify: true
