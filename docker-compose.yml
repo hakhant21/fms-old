@@ -47,6 +47,7 @@ services:
       - "traefik.http.routers.backend.rule=Host(`detfsmm.com`) && PathPrefix(`/api`)"
       - "traefik.http.routers.backend.entrypoints=web"
       - "traefik.http.services.backend.loadbalancer.server.port=9000"
+      - "traefik.http.services.my-service.loadbalancer.strategy=LeastConn"
     networks:
       - traefik-net
 
