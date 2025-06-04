@@ -39,6 +39,7 @@ services:
       - SERVICE_ID=backend
     expose:
       - "9000"
+    restart: always
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.backend.rule=Host(`detfsmm.com`) && PathPrefix(`/api`)"
@@ -54,6 +55,7 @@ services:
       - SERVICE_ID=backend1
     expose:
       - "9000"
+    restart: always
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.backend.rule=Host(`detfsmm.com`) && PathPrefix(`/api`)"
@@ -69,6 +71,7 @@ services:
       - SERVICE_ID=backend2
     expose:
       - "9000"
+    restart: always
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.backend.rule=Host(`detfsmm.com`) && PathPrefix(`/api`)"
