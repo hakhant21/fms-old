@@ -6,13 +6,13 @@ services:
     container_name: traefik
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - traefik-dynamic.yml:/etc/traefik/dynamic.yml:rw
+      - traefik-dynamic.yml:/etc/traefik/dynamic.yml
     command:
       - "--api.insecure=false"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
-      - "--providers.file.filename=/etc/traefik/dynamic.yml"
+      - "--providers.file.filename=/etc/traefik/dynamic.yml:rw"
     ports:
       - "80:80"         # HTTP
       - "8080:8080"     # Dashboard
