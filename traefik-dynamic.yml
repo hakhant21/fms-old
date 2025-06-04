@@ -10,9 +10,9 @@ http:
     backend-service:
       loadBalancer:
         servers:
-          - url: "https://backend:9000/api"
-          - url: "http://backend1:9000/api"
-          - url: "http://backend2:9000/api"
+          - url: "https://backend:9000"
+          - url: "http://backend1:9000"
+          - url: "http://backend2:9000"
         strategy: "LeastConn"
   
   serversTransports:
