@@ -6,7 +6,7 @@ services:
     container_name: traefik
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - traefik-dynamic.yml:/etc/traefik/dynamic.yml
+      - traefik-dynamic.yml:/etc/traefik/dynamic.yml:rw
     command:
       - "--api.insecure=false"
       - "--providers.docker=true"
