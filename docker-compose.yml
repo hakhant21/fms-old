@@ -42,10 +42,10 @@ services:
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
+      - "traefik.http.services.my-service.loadbalancer.strategy=LeastConn"
       - "traefik.http.routers.backend.rule=Host(`detfsmm.com`) && PathPrefix(`/api`)"
       - "traefik.http.routers.backend.entrypoints=web"
       - "traefik.http.services.backend.loadbalancer.server.port=9000"
-    strategy: "LeastConn"
     networks:
       - traefik-net
 
@@ -57,9 +57,9 @@ services:
     expose:
       - "9000"
     restart: unless-stopped
-    strategy: "LeastConn"
     labels:
       - "traefik.enable=true"
+      - "traefik.http.services.my-service.loadbalancer.strategy=LeastConn"
       - "traefik.http.routers.backend.rule=Host(`detfsmm.com`) && PathPrefix(`/api`)"
       - "traefik.http.routers.backend.entrypoints=web"
       - "traefik.http.services.backend.loadbalancer.server.port=9000"
@@ -76,10 +76,10 @@ services:
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
+      - "traefik.http.services.my-service.loadbalancer.strategy=LeastConn"
       - "traefik.http.routers.backend.rule=Host(`detfsmm.com`) && PathPrefix(`/api`)"
       - "traefik.http.routers.backend.entrypoints=web"
       - "traefik.http.services.backend.loadbalancer.server.port=9000"
-    strategy: "LeastConn"
     networks:
       - traefik-net
 
