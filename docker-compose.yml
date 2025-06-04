@@ -84,4 +84,4 @@ services:
 
 networks:
   traefik-net:
-    driver: bridge here
+    driver: bridge
